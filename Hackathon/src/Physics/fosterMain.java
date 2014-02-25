@@ -7,13 +7,9 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
-import java.io.IOException;
-
-import javax.naming.LinkLoopException;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.util.Random;
@@ -21,9 +17,8 @@ import java.util.Random;
 public class fosterMain extends Canvas implements Runnable, KeyListener {
 	
 	/**
-	 * 
+	 * @author David Wigley+ Anthony Foster+ Tina Zunino+ Sean Trainor
 	 */
-	private static final long serialVersionUID = -1382444253480141332L;
 
 	public boolean running = false;
 	Random generator=new Random();
@@ -63,7 +58,8 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 	private int oneJump=-76;
 	private int movePixels;
 	boolean dead, escape, escapePressed, isGrounded;
-	int lowestX;
+	int lowestX, groundedY, groundedYCount;
+	boolean canGround;
 	//jumps
 	private int jumpheight1, jumpheight2, jumpheight3, jumpheight4, jumpheight5, jumpheight6, jumpheight7;
 	//music
@@ -74,9 +70,6 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 	
 	ImageIcon background = new ImageIcon(getClass().getResource("/resources/background.png"));
 	Image picture = background.getImage();
-	
-	ImageIcon failSafeIcon= new ImageIcon(getClass().getResource("/resources/failsafe.png"));
-	Image failSafe = failSafeIcon.getImage();
 	
 	ImageIcon frameIcon = new ImageIcon(getClass().getResource("/resources/background.png"));
 	Image icon = frameIcon.getImage();
@@ -142,7 +135,7 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 	public void run() {
 		
 		long time1 = System.currentTimeMillis();
-		long time2 = System.currentTimeMillis();
+//		long time2 = System.currentTimeMillis();
 		long time3 = System.currentTimeMillis();
 		try {
 			startMusic();
@@ -275,53 +268,37 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 		}
 		if(lowestX <=-170) {
 			jumpheight=generator.nextInt(10);
-			if ((jumpheight - currentJumpHeight > 2) || currentJumpHeight - jumpheight <2) {
+			if ((jumpheight - currentJumpHeight > 2) || (currentJumpHeight - jumpheight <2)) {
 				int decision = generator.nextInt(2);
-				if ((decision ==1) && (currentJumpHeight>0)) {
+				if ((decision ==1) && (currentJumpHeight>2)) {
 					jumpheight = currentJumpHeight -2;
 				}else{
 					jumpheight = currentJumpHeight +2;
 				}
 			}
-			System.out.println("new jump height " + jumpheight);
 			movePixels = jumpheight * oneJump;
 			currentJumpHeight=jumpheight;
-			System.out.println(movePixels);
 			if (currentLow==1) {
 				jumpheight7 = movePixels;
-				System.out.println("attempting change on jumpheight7");
 			}
 			else if (currentLow==2) {
 				jumpheight1 = movePixels;
-				System.out.println("attempting change on jumpheight1");
 			}
 			else if(currentLow==3){
 				jumpheight2 = movePixels;
-				System.out.println("attempting change on jumpheight2");
 			}
 			else if(currentLow==4) {
 				jumpheight3 = movePixels;
-				System.out.println("attempting change on jumpheight3");
 			}
 			else if(currentLow==5){
 				jumpheight4 = movePixels;
-				System.out.println("attempting change on jumpheight4");
 			}
 			else if(currentLow==6){
 				jumpheight5 = movePixels;
-				System.out.println("attempting change on jumpheight5");
 			}
 			else if(currentLow==7){
 				jumpheight6 = movePixels;
-				System.out.println("attempting change on jumpheight6");
 			}
-			System.out.println("jumpheight " + jumpheight1);
-			System.out.println("jumpheight2 " + jumpheight2);
-			System.out.println("jumpheight3 " + jumpheight3);
-			System.out.println("jumpheight4 " + jumpheight4);
-			System.out.println("jumpheight5 " + jumpheight5);
-			System.out.println("jumpheight6 " + jumpheight6);
-			System.out.println("jumpheight7 " + jumpheight7);
 			lowestX=0;
 		}
 		if (!rightPressed && !leftPressed) {
@@ -382,14 +359,194 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 		} else if (!leftPressed && !rightPressed && velocityX < 0 && isGrounded) {
 			velocityX = 0;
 		}
+		
+		//Warning shitty way of handling collision follows. Poor logic ahead. Blame David. Its late I'm tired.
 		if (y >= 600) {
 			y = 600;
 			velocityY = 0;
 			isGrounded = true;
-		} else {
+		} else if(x <=170){
+			groundedYCount = getLowCount();
+			//first section follows. 
+			if (groundedYCount == 1) {
+				groundedY = jumpheight1;
+			}else if (groundedYCount == 2){
+				groundedY = jumpheight2;
+			}else if (groundedYCount ==3) {
+				groundedY = jumpheight3;
+			}else if (groundedYCount ==4) {
+				groundedY = jumpheight4;
+			}else if (groundedYCount ==5) {
+				groundedY = jumpheight5;
+			}else if (groundedYCount ==6) {
+				groundedY = jumpheight6;
+			}else if (groundedYCount ==7) {
+				groundedY = jumpheight7;
+			}
+			if ((y <= groundedY) && (x<=170)) {
+				canGround = true;
+			} else {
+				canGround = false;
+			}
+			if ((canGround) && groundedY-y <2) {
+				y = groundedY;
+				isGrounded=true;
+			}
+		} else if ((x>=170) && (x<=340)) {
+			groundedYCount = getLowCount() + 1;
+			//first section follows. 
+			if (groundedYCount == 8) {
+				groundedY = jumpheight1;
+			}else if (groundedYCount == 2){
+				groundedY = jumpheight2;
+			}else if (groundedYCount ==3) {
+				groundedY = jumpheight3;
+			}else if (groundedYCount ==4) {
+				groundedY = jumpheight4;
+			}else if (groundedYCount ==5) {
+				groundedY = jumpheight5;
+			}else if (groundedYCount ==6) {
+				groundedY = jumpheight6;
+			}else if (groundedYCount ==7) {
+				groundedY = jumpheight7;
+			}
+			if ((y <= groundedY) && (x>=170) && (x<=340)) {
+				canGround = true;
+			}
+			else {
+				canGround = false;
+			}
+			if ((canGround) && groundedY-y <2) {
+				y = groundedY;
+				isGrounded=true;
+			}
+		}else if ((x>340) && (x<510)) {
+			groundedYCount = getLowCount() + 2;
+			//first section follows. 
+			if (groundedYCount == 9) {
+				groundedY = jumpheight1;
+			}else if (groundedYCount == 3){
+				groundedY = jumpheight2;
+			}else if (groundedYCount ==4) {
+				groundedY = jumpheight3;
+			}else if (groundedYCount ==5) {
+				groundedY = jumpheight4;
+			}else if (groundedYCount ==6) {
+				groundedY = jumpheight5;
+			}else if (groundedYCount ==7) {
+				groundedY = jumpheight6;
+			}else if (groundedYCount ==8) {
+				groundedY = jumpheight7;
+			}
+			if ((y <= groundedY) && (x>340) && (x<510)) {
+				canGround = true;
+			}
+			else {
+				canGround = false;
+			}
+			if ((canGround) && groundedY-y <2) {
+				y = groundedY;
+				isGrounded=true;
+			}
+		}else if ((x>=510) && (x<680)) {
+			groundedYCount = getLowCount() + 3;
+			//first section follows. 
+			if (groundedYCount == 10) {
+				groundedY = jumpheight1;
+			}else if (groundedYCount == 4){
+				groundedY = jumpheight2;
+			}else if (groundedYCount ==5) {
+				groundedY = jumpheight3;
+			}else if (groundedYCount ==6) {
+				groundedY = jumpheight4;
+			}else if (groundedYCount ==7) {
+				groundedY = jumpheight5;
+			}else if (groundedYCount ==8) {
+				groundedY = jumpheight6;
+			}else if (groundedYCount ==9) {
+				groundedY = jumpheight7;
+			}
+			if ((y <= groundedY) && (x>=510) && (x<680)) {
+				canGround = true;
+			}
+			else {
+				canGround = false;
+			}
+			if ((canGround) && groundedY-y <2) {
+				y = groundedY;
+				isGrounded=true;
+			}
+		}else if ((x>=650) && (x<=850)) {
+			groundedYCount = getLowCount() + 4;
+			//first section follows. 
+			if (groundedYCount == 11) {
+				groundedY = jumpheight1;
+			}else if (groundedYCount == 5){
+				groundedY = jumpheight2;
+			}else if (groundedYCount ==6) {
+				groundedY = jumpheight3;
+			}else if (groundedYCount ==7) {
+				groundedY = jumpheight4;
+			}else if (groundedYCount ==8) {
+				groundedY = jumpheight5;
+			}else if (groundedYCount ==9) {
+				groundedY = jumpheight6;
+			}else if (groundedYCount ==10) {
+				groundedY = jumpheight7;
+			}
+			if ((y <= groundedY) && (x>=650) && (x<=850)) {
+				canGround = true;
+			}
+			else {
+				canGround = false;
+			}
+			if ((canGround) && groundedY-y <2) {
+				y = groundedY;
+				isGrounded=true;
+			}
+		} else if ((x>=850) && (x<1020)) {
+			groundedYCount = getLowCount() + 5;
+			//first section follows. 
+			if (groundedYCount == 12) {
+				groundedY = jumpheight1;
+			}else if (groundedYCount == 6){
+				groundedY = jumpheight2;
+			}else if (groundedYCount ==7) {
+				groundedY = jumpheight3;
+			}else if (groundedYCount ==8) {
+				groundedY = jumpheight4;
+			}else if (groundedYCount ==9) {
+				groundedY = jumpheight5;
+			}else if (groundedYCount ==10) {
+				groundedY = jumpheight6;
+			}else if (groundedYCount ==11) {
+				groundedY = jumpheight7;
+			}
+			if ((y <= groundedY) && (x>=850) && (x<1020)) {
+				canGround = true;
+			}
+			else {
+				canGround = false;
+			}
+			if ((canGround) && groundedY-y <2) {
+				y = groundedY;
+				isGrounded=true;
+			}
+		}
+		else {
 			isGrounded = false;
 		}
+//		System.out.println("isGrounded " + isGrounded);
+//		System.out.println("can ground "  + canGround);
+		System.out.println("y "  + y);
+//		System.out.println("grounded y "  + groundedY);
+		
+		
 		render();
+	}
+	
+	public int getLowCount() {
+		return currentLow;
 	}
 	
 	public void render() {
@@ -403,9 +560,7 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			return;
 		}
 		g = bs.getDrawGraphics();
-		g.clearRect(0, 0, frame.getWidth(), frame.getHeight());
-		//g.drawImage(failSafe, 0,0,this);
-		
+		g.clearRect(0, 0, frame.getWidth(), frame.getHeight());		
 		g.drawImage(picture, backgroundX, jumpheight1,this);
 		g.drawImage(picture, backgroundX2, jumpheight2,this);
 		g.drawImage(picture, backgroundX3, jumpheight3,this);
@@ -414,7 +569,6 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 		g.drawImage(picture, backgroundX6, jumpheight6, this);
 		g.drawImage(picture, backgroundX7, jumpheight7,this);
 		if (backgroundX <= -170){
-			System.out.println("resetting background");
 			lowCountChange = true;
 			currentLow = 2;
 			backgroundX = 1020;
