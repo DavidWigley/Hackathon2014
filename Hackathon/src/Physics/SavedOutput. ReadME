@@ -1,0 +1,28 @@
+I believe my logic is correct (I hope). The console is chewing through my cpu as you can tell by outputs.
+Cant work on this till later in the week. Will test on quad core to see how it runs.
+
+
+y 476.0
+grounded y 524
+isGrounded false
+can ground true
+y 488.0
+grounded y 524
+isGrounded false
+can ground true
+y 501.0
+grounded y 524
+isGrounded false
+can ground true
+y 515.0
+grounded y 524
+isGrounded false
+can ground false
+y 530.0
+grounded y 524
+isGrounded false
+can ground false
+y 546.0
+grounded y 524
+isGrounded false
+can ground false

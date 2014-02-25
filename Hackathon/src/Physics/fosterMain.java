@@ -383,6 +383,8 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			}else if (groundedYCount ==7) {
 				groundedY = jumpheight7;
 			}
+			//ground is not at top of picture
+			groundedY+=600;
 			if ((y <= groundedY) && (x<=170)) {
 				canGround = true;
 			} else {
@@ -391,6 +393,9 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			if ((canGround) && groundedY-y <2) {
 				y = groundedY;
 				isGrounded=true;
+			}
+			else {
+				isGrounded = false;
 			}
 		} else if ((x>=170) && (x<=340)) {
 			groundedYCount = getLowCount() + 1;
@@ -410,6 +415,8 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			}else if (groundedYCount ==7) {
 				groundedY = jumpheight7;
 			}
+			//ground is not at top of picture
+			groundedY+=600;
 			if ((y <= groundedY) && (x>=170) && (x<=340)) {
 				canGround = true;
 			}
@@ -419,6 +426,9 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			if ((canGround) && groundedY-y <2) {
 				y = groundedY;
 				isGrounded=true;
+			}
+			else {
+				isGrounded = false;
 			}
 		}else if ((x>340) && (x<510)) {
 			groundedYCount = getLowCount() + 2;
@@ -438,6 +448,8 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			}else if (groundedYCount ==8) {
 				groundedY = jumpheight7;
 			}
+			//ground is not at top of picture
+			groundedY+=600;
 			if ((y <= groundedY) && (x>340) && (x<510)) {
 				canGround = true;
 			}
@@ -447,6 +459,9 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			if ((canGround) && groundedY-y <2) {
 				y = groundedY;
 				isGrounded=true;
+			}
+			else {
+				isGrounded = false;
 			}
 		}else if ((x>=510) && (x<680)) {
 			groundedYCount = getLowCount() + 3;
@@ -466,6 +481,8 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			}else if (groundedYCount ==9) {
 				groundedY = jumpheight7;
 			}
+			//ground is not at top of picture
+			groundedY+=600;
 			if ((y <= groundedY) && (x>=510) && (x<680)) {
 				canGround = true;
 			}
@@ -475,6 +492,9 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			if ((canGround) && groundedY-y <2) {
 				y = groundedY;
 				isGrounded=true;
+			}
+			else {
+				isGrounded = false;
 			}
 		}else if ((x>=650) && (x<=850)) {
 			groundedYCount = getLowCount() + 4;
@@ -494,6 +514,8 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			}else if (groundedYCount ==10) {
 				groundedY = jumpheight7;
 			}
+			//ground is not at top of picture
+			groundedY+=600;
 			if ((y <= groundedY) && (x>=650) && (x<=850)) {
 				canGround = true;
 			}
@@ -503,6 +525,9 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			if ((canGround) && groundedY-y <2) {
 				y = groundedY;
 				isGrounded=true;
+			}
+			else {
+				isGrounded = false;
 			}
 		} else if ((x>=850) && (x<1020)) {
 			groundedYCount = getLowCount() + 5;
@@ -522,6 +547,8 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			}else if (groundedYCount ==11) {
 				groundedY = jumpheight7;
 			}
+			//ground is not at top of picture
+			groundedY+=600;
 			if ((y <= groundedY) && (x>=850) && (x<1020)) {
 				canGround = true;
 			}
@@ -532,14 +559,16 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 				y = groundedY;
 				isGrounded=true;
 			}
-		}
-		else {
+			else {
+				isGrounded = false;
+			}
+		}else {
 			isGrounded = false;
 		}
-//		System.out.println("isGrounded " + isGrounded);
-//		System.out.println("can ground "  + canGround);
+		System.out.println("isGrounded " + isGrounded);
+		System.out.println("can ground "  + canGround);
 		System.out.println("y "  + y);
-//		System.out.println("grounded y "  + groundedY);
+		System.out.println("grounded y "  + groundedY);
 		
 		
 		render();
