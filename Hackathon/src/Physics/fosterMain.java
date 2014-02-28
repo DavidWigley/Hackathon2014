@@ -598,13 +598,13 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 		g = bs.getDrawGraphics();
 		g.clearRect(0, 0, frameWidth, frameHeight);
 		g.drawImage(back, frameWidth, frameHeight, this);
-		g.drawImage(picture, backgroundX, jumpheight1 + 600,this);
-		g.drawImage(picture, backgroundX2, jumpheight2 + 600,this);
-		g.drawImage(picture, backgroundX3, jumpheight3 + 600 ,this);
-		g.drawImage(picture, backgroundX4, jumpheight4 + 600,this);
-		g.drawImage(picture, backgroundX5,jumpheight5 + 600, this);
-		g.drawImage(picture, backgroundX6, jumpheight6 + 600, this);
-		g.drawImage(picture, backgroundX7, jumpheight7 + 600,this);
+		g.drawImage(picture, backgroundX, jumpheight1 + 720,this);
+		g.drawImage(picture, backgroundX2, jumpheight2 + 720,this);
+		g.drawImage(picture, backgroundX3, jumpheight3 + 720 ,this);
+		g.drawImage(picture, backgroundX4, jumpheight4 + 720,this);
+		g.drawImage(picture, backgroundX5,jumpheight5 + 720, this);
+		g.drawImage(picture, backgroundX6, jumpheight6 + 720, this);
+		g.drawImage(picture, backgroundX7, jumpheight7 + 720,this);
 		if (backgroundX <= -170){
 			lowCountChange = true;
 			currentLow = 2;
