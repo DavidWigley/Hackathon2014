@@ -65,13 +65,20 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 	//music
 	AudioInputStream backgroundMusic;
 	Clip music;
+	private static final int frameWidth = 1020;
+	private static final int frameHeight = 760;
+	
 	
 	Graphics g;
 	
-	ImageIcon background = new ImageIcon(getClass().getResource("/resources/background.png"));
-	Image picture = background.getImage();
+	ImageIcon foreground = new ImageIcon(getClass().getResource("/resources/foregroundnew.png"));
+	Image picture = foreground.getImage();
 	
-	ImageIcon frameIcon = new ImageIcon(getClass().getResource("/resources/background.png"));
+	ImageIcon background = new ImageIcon(getClass().getResource("/resources/background.png"));
+	Image back = background.getImage();
+	
+	
+	ImageIcon frameIcon = new ImageIcon(getClass().getResource("/resources/nuke.png"));
 	Image icon = frameIcon.getImage();
 	
 	ImageIcon idle = new ImageIcon(getClass().getResource("/resources/idle.png"));
@@ -589,14 +596,15 @@ public class fosterMain extends Canvas implements Runnable, KeyListener {
 			return;
 		}
 		g = bs.getDrawGraphics();
-		g.clearRect(0, 0, frame.getWidth(), frame.getHeight());		
-		g.drawImage(picture, backgroundX, jumpheight1,this);
-		g.drawImage(picture, backgroundX2, jumpheight2,this);
-		g.drawImage(picture, backgroundX3, jumpheight3,this);
-		g.drawImage(picture, backgroundX4, jumpheight4,this);
-		g.drawImage(picture, backgroundX5,jumpheight5, this);
-		g.drawImage(picture, backgroundX6, jumpheight6, this);
-		g.drawImage(picture, backgroundX7, jumpheight7,this);
+		g.clearRect(0, 0, frameWidth, frameHeight);
+		g.drawImage(back, frameWidth, frameHeight, this);
+		g.drawImage(picture, backgroundX, jumpheight1 + 600,this);
+		g.drawImage(picture, backgroundX2, jumpheight2 + 600,this);
+		g.drawImage(picture, backgroundX3, jumpheight3 + 600 ,this);
+		g.drawImage(picture, backgroundX4, jumpheight4 + 600,this);
+		g.drawImage(picture, backgroundX5,jumpheight5 + 600, this);
+		g.drawImage(picture, backgroundX6, jumpheight6 + 600, this);
+		g.drawImage(picture, backgroundX7, jumpheight7 + 600,this);
 		if (backgroundX <= -170){
 			lowCountChange = true;
 			currentLow = 2;
